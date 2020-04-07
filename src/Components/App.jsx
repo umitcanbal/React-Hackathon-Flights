@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import {MySpinner} from "./Spinner.jsx"
 
 export default class App extends React.Component {
 
@@ -24,10 +25,14 @@ export default class App extends React.Component {
         return (
             <div>
                 {this.state.error ? "Error while fetching" : undefined}
-                {this.state.isLoading ? "Loading..!" : undefined}
+                {this.state.isLoading ? <MySpinner /> : undefined}
                 <h2>App Component</h2>
             </div>
         )
     }
 
 }
+
+// Aşağıdaki iki komutu da terminale yazmam gerekti, ikisi de şart
+// npm install --save bootstrap
+// npm install --save reactstrap react react-dom
