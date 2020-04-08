@@ -12,6 +12,7 @@ export default class App extends React.Component {
         this.state = {
             isLoading: false,
             error: false,
+            isCheckbox: false,
             data: null,
             fly_from: null,
             fly_to: null,
@@ -31,6 +32,10 @@ export default class App extends React.Component {
         } ) 
     }
 
+    clickCheckBox = () => {
+        this.setState({isCheckbox: !this.state.isCheckbox})
+    }
+
     clickSearchButton = () => {
         const {fly_from, fly_to} = this.state;
         if(fly_from && fly_to) this.searchFlights();
@@ -39,15 +44,24 @@ export default class App extends React.Component {
 
     async searchFlights() {
         this.setState({isLoading: true});
-        const {fly_from, fly_to} = this.state;
+        const {fly_from, fly_to, isCheckbox} = this.state;
         await fetch(`https://api.skypicker.com/flights?fly_from=${fly_from}&fly_to=${fly_to}&dateFrom=18/11/2020&dateTo=19/11/2020&partner=picky&v=3`)
             .then(response => response.json())
-            .then(data => this.setState({data: data, isLoading: false}))
+            .then(data => {
+                if(!isCheckbox) this.setState({data: data, isLoading: false})
+                else {
+                    const dataForDirectFlights = data.data.filter( eachFlight => {
+                        if(eachFlight.route.length===1) return(eachFlight) 
+                    })
+                    data.data = dataForDirectFlights;
+                    this.setState({data: data, isLoading: false})
+                }
+            })
             .catch(() => this.setState({error: true}));
     }
 
     render() {
-        const {data, error, isLoading, city_from, city_to} = this.state;
+        const {data, error, isLoading, isCheckbox, city_from, city_to} = this.state;
         const {departureCities, arrivalCities} = cities;
         
         return (
@@ -56,6 +70,9 @@ export default class App extends React.Component {
                     <Dropdown dropdownTitle={city_from ? city_from : "Departure"} cities={departureCities} chooseCity={this.chooseCity} />
                     <Dropdown dropdownTitle={city_to ? city_to : "Arrival"} cities={arrivalCities} chooseCity={this.chooseCity} />
                     <button onClick={this.clickSearchButton}>Search..!</button>
+                    
+                    <label><input type="checkbox" defaultChecked={isCheckbox} onChange={this.clickCheckBox} /> Only direct flights</label>
+                    {/* <input type="checkbox" defaultChecked={this.state.chkbox} onChange={this.handleChangeChk} /> */}
                 </div>
                 {error ? "Error while fetching" : undefined}
                 {isLoading ? <MySpinner /> : undefined}
