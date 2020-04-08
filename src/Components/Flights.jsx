@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 export default class Flights extends React.Component {
   render() {
     const {data} = this.props;
+    if(!data.length) return <p>No flight found for the selected route! Try something else.</p>
 
     return(
       <div className="container">
@@ -21,13 +22,14 @@ export default class Flights extends React.Component {
           </thead>
           <tbody>
             {data.map((singleFlight, index) => {
+              const {cityFrom, cityTo, dTime, aTime, price} = singleFlight;
               return(
                 <tr key={`sub-${index}`}>
-                  <td>{singleFlight.cityFrom}</td>
-                  <td>{singleFlight.cityTo}</td>
-                  <td>{manageTime(singleFlight.dTime)}</td>
-                  <td>{manageTime(singleFlight.aTime)}</td>
-                  <td>{singleFlight.price}</td>
+                  <td>{cityFrom}</td>
+                  <td>{cityTo}</td>
+                  <td>{manageTime(dTime)}</td>
+                  <td>{manageTime(aTime)}</td>
+                  <td>{price}</td>
                 </tr>
               )
             })}
@@ -42,6 +44,3 @@ function manageTime(time) {
   time = DateTime.fromMillis(time * 1000).toFormat('hh:mm');
   return time;
 }
-
-//Aşağıdakini yapmak zorunda kaldım zamanları düzgünce gösterebilmek için
-// npm install --save luxon
