@@ -54,7 +54,7 @@ export default class App extends React.Component {
                         if(eachFlight.route.length===1) return(eachFlight) 
                     })
                     data.data = dataForDirectFlights;
-                    this.setState({data: data, isLoading: false})
+                    this.setState({data: data, isCheckbox: isCheckbox, isLoading: false})
                 }
             })
             .catch(() => this.setState({error: true}));
@@ -76,7 +76,7 @@ export default class App extends React.Component {
                 </div>
                 {error ? "Error while fetching" : undefined}
                 {isLoading ? <MySpinner /> : undefined}
-                {data ? <Flights data={data.data} /> : undefined}
+                {data ? <Flights data={data.data} isCheckbox={isCheckbox} /> : undefined}
             </div>
         )
     }

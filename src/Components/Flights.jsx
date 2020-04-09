@@ -8,39 +8,39 @@ export default class Flights extends React.Component {
     this.state = {
       currentPage: 1,
       numberOfPages: null,
+      isCheckbox: null,
     }
   }
 
   componentDidMount() {
-    const {data} = this.props;
+    const {data, isCheckbox} = this.props;
     const numberOfPages = Math.ceil(data.length / 5);
-    this.setState({numberOfPages: numberOfPages})
+    this.setState({numberOfPages: numberOfPages, isCheckbox: isCheckbox})
   }
 
   componentDidUpdate(prevProps) {
-    const {data} = this.props;
+    const {data, isCheckbox} = this.props;
     if(data !== prevProps.data) {
       const numberOfPages = Math.ceil(data.length / 5);
-      this.setState({numberOfPages: numberOfPages, currentPage: 1})
+      this.setState({numberOfPages: numberOfPages, currentPage: 1, isCheckbox: isCheckbox})
     }
   }
 
-  previousPage = () => {
-    this.setState({currentPage: this.state.currentPage-1})
-  }
-
-  nextPage = () => {
-    this.setState({currentPage: this.state.currentPage+1})
+  changePage = () => {
+    const value = event.target.innerText;
+    value==="<" ? this.setState({currentPage: this.state.currentPage-1}) : this.setState({currentPage: this.state.currentPage+1})
   }
 
   render() {
     const {data} = this.props;
-    const {currentPage, numberOfPages} = this.state;
+    const {currentPage, numberOfPages, isCheckbox} = this.state;
+    console.log("ischeckbox", isCheckbox);
     console.log("data", data);
     console.log("currentPage", currentPage);
     console.log("numberOfPages", numberOfPages);
-    if(!data.length) return <p>No flight found for the selected route! Try something else.</p>
+    if(!data.length) return <p>No {isCheckbox ? "direct" : ""} flight found for the selected route! Try something else.</p>
     const dataForChosenPage = data.filter( (singleFlight, index) => {
+      // for example if "currentPage" = 1; the conditions met when "index" is between 0 and 4, so the first 5 flights are returned ! 
       if(((currentPage-1)*5)<=index && index<=(currentPage*5-1)) return singleFlight;
     } )
     return(
@@ -86,8 +86,8 @@ export default class Flights extends React.Component {
             })}
           </tbody>
         </table>
-        {currentPage!==1 ? <button onClick={this.previousPage}>{"<"}</button> : undefined }
-        {currentPage!==numberOfPages ? <button onClick={this.nextPage}>{">"}</button> : undefined }
+        {currentPage!==1 ? <button onClick={this.changePage}>{"<"}</button> : undefined }
+        {currentPage!==numberOfPages ? <button onClick={this.changePage}>{">"}</button> : undefined }
       </div>
     )
   }
