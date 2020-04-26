@@ -34,10 +34,7 @@ export default class Flights extends React.Component {
   render() {
     const {data} = this.props;
     const {currentPage, numberOfPages, isCheckbox} = this.state;
-    console.log("ischeckbox", isCheckbox);
-    console.log("data", data);
-    console.log("currentPage", currentPage);
-    console.log("numberOfPages", numberOfPages);
+    
     if(!data.length) return <p>No {isCheckbox ? "direct" : ""} flight found for the selected route! Try something else.</p>
     const dataForChosenPage = data.filter( (singleFlight, index) => {
       // for example if "currentPage" = 1; the conditions met when "index" is between 0 and 4, so the first 5 flights are returned ! 

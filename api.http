@@ -1,0 +1,3 @@
+GET https://api.skypicker.com/locations?term=Istanbul&location_types=city
+
+# GET https://api.skypicker.com/flights?fly_from=Istanbul&fly_to=Prague&dateFrom=18/11/2020&dateTo=19/11/2020&partner=picky&v=3
