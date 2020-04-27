@@ -3,7 +3,7 @@ import {MySpinner} from "./Spinner.jsx";
 import Flights from "./Flights.jsx";
 import Dropdown from "./Dropdown.jsx";
 
-
+import {fetchCities} from "../Api"
 export default class App extends React.Component {
 
     constructor(props) {
@@ -12,62 +12,34 @@ export default class App extends React.Component {
         this.state = {
             isLoading: false,
             error: false,
-            isCheckbox: false,
+            isCheckboxOn: false,
             data: null,
             fly_from: null,
             fly_to: null,
-            city_from: null,
-            city_to: null,
             departure: "",
             arrival: "",
-            departureCities: null,
-            arrivalCities: null,
         }
     }
 
-    onInputChange = async (event) => {
-        const value = event.target.value;
+    onInputChange = async ({target: {value, name}}) => {  
+        const shownCities = await fetchCities(value)
         this.setState({
-            [event.target.name]: value
+            [name]: shownCities
         });
-        const departureOrArrival = `${event.target.name}Cities`;
-
-        await fetch(`https://api.skypicker.com/locations?term=${value}&location_types=city`)
-            .then(response => response.json())
-            // .then(data => this.setState({[`${event.target.name}Cities`]: data}) )
-            .then(data => this.setState({[`${departureOrArrival}`]: data}));
-        console.log(this.state);
-        // console.log(this.state.arrivalCities);
-        // this.setState({event.target.name: fly_from});
-        // this.setState({inputFieldValueForDeparture: value})
-        // await fetch(`https://api.skypicker.com/locations?term=${value}&location_types=city`)
-        //     .then(response => response.json())
-        //     .then(data => this.setState({citiesForDeparture: data}) )
     }
 
     chooseDepartureCity = () => {
-        
         const value = event.target.value;
-
-        // console.log(value);
-        // const selectedCity = this.state.citiesForDeparture.locations.find(city => {
-        //     return city.name===value;
-        // } );
-        // const fly_from = selectedCity.code;
         this.setState({fly_from: value});
     }
 
     chooseArrivalCity = () => {
         const value = event.target.value;
-    //     const selectedCity = this.state.citiesForArrival.locations.find(city => {
-    //         return city.name===value;
-    //     } );
-    //     const fly_from = selectedCity.code;
         this.setState({fly_to: value});
     }
 
     clickCheckBox = () => {
-        this.setState({isCheckbox: !this.state.isCheckbox})
+        this.setState({isCheckboxOn: !this.state.isCheckboxOn})
     }
 
     clickSearchButton = () => {
@@ -78,52 +50,70 @@ export default class App extends React.Component {
 
     async searchFlights() {
         this.setState({isLoading: true});
-        const {fly_from, fly_to, isCheckbox} = this.state;
+        const {fly_from, fly_to, isCheckboxOn} = this.state;
         await fetch(`https://api.skypicker.com/flights?fly_from=${fly_from}&fly_to=${fly_to}&dateFrom=18/11/2020&dateTo=19/11/2020&partner=picky&v=3`)
             .then(response => response.json())
             .then(data => {
-                if(!isCheckbox) this.setState({data: data, isLoading: false})
+                if(!isCheckboxOn) this.setState({data: data, isLoading: false})
                 else {
                     const dataForDirectFlights = data.data.filter( eachFlight => {
                         if(eachFlight.route.length===1) return(eachFlight) 
                     })
                     data.data = dataForDirectFlights;
-                    this.setState({data: data, isCheckbox: isCheckbox, isLoading: false})
+                    this.setState({data: data, isCheckboxOn: isCheckboxOn, isLoading: false})
                 }
             })
             .catch(() => this.setState({error: true}));
     }
 
     render() {
-        const {data, error, isLoading, isCheckbox, city_from, city_to} = this.state;
-        const {departureCities, arrivalCities} = this.state;
-        // console.log("App -> render -> departureCities", departureCities)
-        // console.log("App -> render -> arrivalCities", arrivalCities)
-        
-        
-        
+        const {data, error, isLoading, isCheckboxOn, departure, arrival} = this.state;    
         
         return (
+            /* 
+            <SearchMenu />
+            <Flights />
+            */
             <div>
                 <div style={{display: "flex", justifyContent: "center"}}>
-                    <button onClick={this.clickSearchButton}>Search..!</button>
                     <input type="text" placeholder="Departure City" name="departure" onChange={this.onInputChange}/>
                     <input type="text" placeholder="Arrival City" name="arrival" onChange={this.onInputChange}/>
-                    <label><input type="checkbox" defaultChecked={isCheckbox} onChange={this.clickCheckBox} /> Only direct flights</label>
+                    <label><input type="checkbox" defaultChecked={isCheckboxOn} onChange={this.clickCheckBox} /> Only direct flights</label>
+                    <button onClick={this.clickSearchButton}>Search..!</button>
                 </div>
 
-                {this.state.departureCities!==null ? this.state.departureCities.locations.map((city, index) => {return <option key={index} name="fly_from" value={`${city.code}`} onClick={this.chooseDepartureCity}>{city.name}</option> }  ) : undefined}
-                {this.state.arrivalCities!==null ? this.state.arrivalCities.locations.map((city, index) => {return <option key={index} name="fly_to" value={`${city.code}`} onClick={this.chooseArrivalCity}>{city.name}</option> }  ) : undefined}
-                {/* {this.state.cities!==null ? this.state.cities.locations.map((city, index) => {return <li key={index}><a onClick={this.chooseArrivalCity}>{city.name}</a></li> }) : undefined} */}
+                {departure ? departure.locations.map((city, index) => <option 
+                    key={index} 
+                    name="fly_from" 
+                    value={`${city.code}`} 
+                    onClick={this.chooseDepartureCity}>
+                        {city.name}
+                    </option> 
+                ) : undefined}
+
+                {arrival ? arrival.locations.map((city, index) => <option 
+                    key={index} 
+                    name="fly_to" 
+                    value={`${city.code}`} 
+                    onClick={this.chooseArrivalCity}>
+                        {city.name}
+                    </option> 
+                ) : undefined}
+
 
                 {error ? "Error while fetching" : undefined}
                 {isLoading ? <MySpinner /> : undefined}
-                {data ? <Flights data={data.data} isCheckbox={isCheckbox} /> : undefined}
+                {data ? <Flights data={data.data} isCheckboxOn={isCheckboxOn} /> : undefined}
             </div>
         )
     }
 
 }
+
+
+
+
+
 
 // const cities = 
 // {
