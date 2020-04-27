@@ -3,7 +3,7 @@ import {MySpinner} from "./Spinner.jsx";
 import Flights from "./Flights.jsx";
 import Dropdown from "./Dropdown.jsx";
 
-import {fetchCities} from "../Api"
+import {fetchCities, fetchFlights} from "../Api"
 export default class App extends React.Component {
 
     constructor(props) {
@@ -11,7 +11,6 @@ export default class App extends React.Component {
         
         this.state = {
             isLoading: false,
-            error: false,
             isCheckboxOn: false,
             data: null,
             fly_from: null,
@@ -51,29 +50,15 @@ export default class App extends React.Component {
     async searchFlights() {
         this.setState({isLoading: true});
         const {fly_from, fly_to, isCheckboxOn} = this.state;
-        await fetch(`https://api.skypicker.com/flights?fly_from=${fly_from}&fly_to=${fly_to}&dateFrom=18/11/2020&dateTo=19/11/2020&partner=picky&v=3`)
-            .then(response => response.json())
-            .then(data => {
-                if(!isCheckboxOn) this.setState({data: data, isLoading: false})
-                else {
-                    const dataForDirectFlights = data.data.filter( eachFlight => {
-                        if(eachFlight.route.length===1) return(eachFlight) 
-                    })
-                    data.data = dataForDirectFlights;
-                    this.setState({data: data, isCheckboxOn: isCheckboxOn, isLoading: false})
-                }
-            })
-            .catch(() => this.setState({error: true}));
+
+        const fetchedFlightsData = await fetchFlights(fly_from, fly_to, isCheckboxOn)
+        this.setState({data: fetchedFlightsData, isCheckboxOn: isCheckboxOn, isLoading: false})
     }
 
     render() {
-        const {data, error, isLoading, isCheckboxOn, departure, arrival} = this.state;    
+        const {data, isLoading, isCheckboxOn, departure, arrival} = this.state;    
         
         return (
-            /* 
-            <SearchMenu />
-            <Flights />
-            */
             <div>
                 <div style={{display: "flex", justifyContent: "center"}}>
                     <input type="text" placeholder="Departure City" name="departure" onChange={this.onInputChange}/>
@@ -101,7 +86,6 @@ export default class App extends React.Component {
                 ) : undefined}
 
 
-                {error ? "Error while fetching" : undefined}
                 {isLoading ? <MySpinner /> : undefined}
                 {data ? <Flights data={data.data} isCheckboxOn={isCheckboxOn} /> : undefined}
             </div>
