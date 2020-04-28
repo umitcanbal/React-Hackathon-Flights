@@ -1,9 +1,11 @@
 import React from "react";
-import { MySpinner } from "./Spinner.jsx";
-import Flights from "./Flights.jsx";
-import Dropdown from "./Dropdown.jsx";
+
+import Flights from ".//Flights/Flights.jsx";
+import SearchMenu from "./SearchMenu/SearchMenu.jsx";
 
 import { fetchCities, fetchFlights } from "../Api"
+
+import { MySpinner } from "./Spinner.jsx";
 
 export default class App extends React.Component {
 
@@ -42,8 +44,8 @@ export default class App extends React.Component {
     }
 
     async searchFlights() {
-        this.setState({ isLoading: true });
         const { fly_from, fly_to, isCheckboxOn } = this.state;
+        this.setState({ isLoading: true });
 
         const fetchedFlightsData = await fetchFlights(fly_from, fly_to, isCheckboxOn)
         this.setState({ data: fetchedFlightsData, isCheckboxOn: isCheckboxOn, isLoading: false })
@@ -54,80 +56,18 @@ export default class App extends React.Component {
 
         return (
             <div>
-                <div style={{ display: "flex", justifyContent: "center" }}>
-                    <input type="text" placeholder="Departure City" name="departure" list="departure" onChange={this.onInputChange} />
-                    <input type="text" placeholder="Arrival City" name="arrival" list="arrival" onChange={this.onInputChange} />
-                    <label><input type="checkbox" defaultChecked={isCheckboxOn} onChange={this.clickCheckBox} /> Only direct flights</label>
-                    <button onClick={this.clickSearchButton}>Search..!</button>
-                </div>
-                
-                <datalist id="departure" >
-                    {departure ? departure.locations.map((city, index) =>
-                        <option
-                            key={index}
-                            value={`${city.code}`}
-                        >
-                            {city.name}
-                        </option>
-                    ) : undefined}
-                </datalist>
-
-                <datalist id="arrival" >
-                    {arrival ? arrival.locations.map((city, index) =>
-                        <option
-                            key={index}
-                            value={`${city.code}`}
-                        >
-                            {city.name}
-                        </option>
-                    ) : undefined}
-                </datalist>
+                <SearchMenu 
+                    onInputChange={this.onInputChange}
+                    isCheckboxOn={isCheckboxOn}
+                    clickCheckBox={this.clickCheckBox}
+                    clickSearchButton={this.clickSearchButton}
+                    departure={departure}
+                    arrival={arrival}
+                />
 
                 {isLoading ? <MySpinner /> : undefined}
                 {data ? <Flights data={data.data} isCheckboxOn={isCheckboxOn} /> : undefined}
             </div>
         )
     }
-
 }
-
-
-
-
-
-// const cities = 
-// {
-//     departureCities: 
-//     [
-//         {Prague: "PRG"},
-//         {Berlin: "TXL"},
-//         {Warsaw: "WAW"},
-//         {Pardubice: "PED"},
-//     ],
-//     arrivalCities: 
-//     [
-//         {Valencia: "VLC"},
-//         {Barcelona: "BCN"},
-//         {Madrid: "MAD"},
-//         {Milano: "MXP"},
-//         {Athens: "ATH"},
-//     ],
-// }
-
-
-
-
-// chooseCity = () => {
-//     const value = event.target.innerText;
-
-//     cities.departureCities.map( (city) => {
-//         if(city[value]) this.setState({fly_from: city[value], city_from: value});
-//     } )    
-//     cities.arrivalCities.map( (city) => {
-//         if(city[value]) this.setState({fly_to: city[value], city_to: value});
-//     } ) 
-// }
-
-
-{/* <Dropdown dropdownTitle={city_from ? city_from : "Departure"} cities={departureCities} chooseCity={this.chooseCity} />
-                    <Dropdown dropdownTitle={city_to ? city_to : "Arrival"} cities={arrivalCities} chooseCity={this.chooseCity} /> */}
