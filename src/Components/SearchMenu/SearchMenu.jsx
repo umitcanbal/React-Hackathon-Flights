@@ -1,45 +1,69 @@
 import React, { Component } from 'react'
 
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+
 export class SearchMenu extends Component {
   constructor(props) {
     super(props)
   }
 
   render() {
-    const {onInputChange, isCheckboxOn, clickCheckBox, clickSearchButton, departure, arrival} = this.props
+    const {onInputChange, onInputSelect, clickCheckBox, clickSearchButton, departure, arrival} = this.props
 
     return (
       <div>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <input type="text" placeholder="Departure City" name="departure" list="departure" onChange={onInputChange} />
-          <input type="text" placeholder="Arrival City" name="arrival" list="arrival" onChange={onInputChange} />
-          <label>
-              <input type="checkbox" defaultChecked={isCheckboxOn} onChange={clickCheckBox} /> Only direct flights
-          </label>
-          <button onClick={clickSearchButton}>Search..!</button>
+
+          <Autocomplete
+            id="departure"
+            onInputChange={onInputChange}
+            onChange={(event, value) => onInputSelect(value)}
+            options={
+              departure ?
+                departure.locations.map( city => {
+                  return {title: city.name, cityCode: city.code, id:"departure"}
+                })
+              :
+              [{title: ""}]
+            }
+            getOptionLabel={(option) => option.title}
+            style={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Departure" variant="outlined" />}
+          />
+
+          <Autocomplete
+            id="arrival"
+            onInputChange={onInputChange}
+            onChange={(event, value) => onInputSelect(value)}
+            options={
+              arrival ?
+                arrival.locations.map( city => {
+                  return {title: city.name, cityCode: city.code, id:"arrival"}
+                })
+              :
+                [{title: ""}]
+            }
+            getOptionLabel={(option) => option.title}
+            style={{ width: 300 }}
+            renderInput={(params) => <TextField {...params} label="Arrival" variant="outlined" />}
+          />
+
         </div>
 
-        <datalist id="departure" >
-          {departure ? departure.locations.map((city, index) =>
-              <option
-                  key={index}
-                  value={`${city.code}`}
-              >
-                  {city.name}
-              </option>
-          ) : undefined}
-        </datalist>
+        <FormControlLabel
+            control={<Checkbox color="primary" onChange={clickCheckBox}/>}
+            label="Only direct flights"
+            labelPlacement="end"
+          />
 
-        <datalist id="arrival" >
-          {arrival ? arrival.locations.map((city, index) =>
-              <option
-                  key={index}
-                  value={`${city.code}`}
-              >
-                  {city.name}
-              </option>
-          ) : undefined}
-        </datalist>
+        <Button variant="contained" color="primary" onClick={clickSearchButton} >
+          Search
+        </Button>
+
       </div>
     )
   }

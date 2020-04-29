@@ -19,18 +19,14 @@ export default class App extends React.Component {
         arrival: "",
     }
 
-    onInputChange = async ({ target: { value, name } }) => {
+    onInputChange = async ({ target: { value, id } }) => {
         const shownCities = await fetchCities(value)
-        this.setState({ [name]: shownCities })
+        this.setState({ [id]: shownCities })
+    }
 
-        this.state[name].locations.map(location => {
-            if (location.code === value && name === "departure") {
-                this.setState({ fly_from: value })
-            }
-            if (location.code === value && name === "arrival") {
-                this.setState({ fly_to: value })
-            }
-        })
+    onInputSelect = ({cityCode, id}) => {
+        if(id==="departure") this.setState({fly_from: cityCode})
+        if(id==="arrival") this.setState({fly_to: cityCode})
     }
 
     clickCheckBox = () => {
@@ -39,8 +35,7 @@ export default class App extends React.Component {
 
     clickSearchButton = () => {
         const { fly_from, fly_to } = this.state;
-        if (fly_from && fly_to) this.searchFlights();
-        if (!fly_from || !fly_to) alert("Please choose valid destination and arrival city")
+        (fly_from && fly_to) ? this.searchFlights() : alert("Please choose valid destination and arrival city");
     }
 
     async searchFlights() {
@@ -48,7 +43,7 @@ export default class App extends React.Component {
         this.setState({ isLoading: true });
 
         const fetchedFlightsData = await fetchFlights(fly_from, fly_to, isCheckboxOn)
-        this.setState({ data: fetchedFlightsData, isCheckboxOn: isCheckboxOn, isLoading: false })
+        this.setState({ data: fetchedFlightsData, isLoading: false })
     }
 
     render() {
@@ -58,11 +53,11 @@ export default class App extends React.Component {
             <div>
                 <SearchMenu 
                     onInputChange={this.onInputChange}
-                    isCheckboxOn={isCheckboxOn}
-                    clickCheckBox={this.clickCheckBox}
-                    clickSearchButton={this.clickSearchButton}
                     departure={departure}
                     arrival={arrival}
+                    onInputSelect={this.onInputSelect}
+                    clickCheckBox={this.clickCheckBox}
+                    clickSearchButton={this.clickSearchButton}
                 />
 
                 {isLoading ? <MySpinner /> : undefined}
