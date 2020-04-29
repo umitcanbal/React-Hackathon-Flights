@@ -1,7 +1,7 @@
 import React from "react";
 
 import FlightsTableRow from "./FlightsTableRow/FlightsTableRow.jsx"
-
+import Pagination from "./Pagination/Pagination.jsx"
 export default class Flights extends React.Component {
   constructor() {
     super();
@@ -15,7 +15,6 @@ export default class Flights extends React.Component {
 
   componentDidMount() {
     const {data, isCheckboxOn} = this.props;
-    console.log("Flights -> componentDidMount -> data", data)
     
     const numberOfPages = Math.ceil(data.length / 5);
     this.setState({numberOfPages: numberOfPages, isCheckboxOn: isCheckboxOn})
@@ -29,9 +28,8 @@ export default class Flights extends React.Component {
     }
   }
 
-  changePage = () => {
-    const value = event.target.innerText;
-    value==="<" ? this.setState({currentPage: this.state.currentPage-1}) : this.setState({currentPage: this.state.currentPage+1})
+  changePage = (page) => {
+    this.setState({currentPage: page})
   }
 
   render() {
@@ -45,7 +43,7 @@ export default class Flights extends React.Component {
     } )
     return(
       <div className="container" style={{display: "flex", flexDirection: "column", justfiyContent: "flex-start", alignItems: "center"}}>
-        <h1>Flight Information</h1>
+        <h2>Flight Information</h2>
         <div style={{display: "flex", flexDirection: "column", justfiyContent: "center", alignItems: "center"}}>
           <table className="table table-striped table-bordered table-hover table-condensed">
             <thead>
@@ -68,9 +66,9 @@ export default class Flights extends React.Component {
               })}
             </tbody>
           </table>
+          
+          <Pagination currentPage={currentPage} numberOfPages={numberOfPages} changePage={this.changePage} />
 
-          {currentPage!==1 ? <button onClick={this.changePage}>{"<"}</button> : undefined }
-          {currentPage!==numberOfPages ? <button onClick={this.changePage}>{">"}</button> : undefined }
         </div>
       </div>
     )

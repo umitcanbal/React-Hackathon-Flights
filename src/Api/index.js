@@ -11,7 +11,6 @@ export const fetchCities = async (value) => {
 
 export const fetchFlights = async (fly_from, fly_to, date, isCheckboxOn) => {
   const url2 = `https://api.skypicker.com/flights?fly_from=${fly_from}&fly_to=${fly_to}&dateFrom=${date}&partner=picky&v=3`
-  console.log("fetchFlights -> url2", url2)
   
   const flightsData = await fetch(url2)
     .then(response => response.json())
