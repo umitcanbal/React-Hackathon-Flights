@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import Calendar from "./Calendar/Calendar.jsx"
+
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -12,10 +14,10 @@ export class SearchMenu extends Component {
   }
 
   render() {
-    const {onInputChange, onInputSelect, clickCheckBox, clickSearchButton, departure, arrival} = this.props
+    const { onInputChange, departure, arrival, onInputSelect, onDateSelect, clickCheckBox, clickSearchButton } = this.props
 
     return (
-      <div>
+      <div style={{ display: "flex", flexDirection:"column", justifyContent: "space-around", alignItems: "center", height: "30vh", }}>
         <div style={{ display: "flex", justifyContent: "center" }}>
 
           <Autocomplete
@@ -24,11 +26,11 @@ export class SearchMenu extends Component {
             onChange={(event, value) => onInputSelect(value)}
             options={
               departure ?
-                departure.locations.map( city => {
-                  return {title: city.name, cityCode: city.code, id:"departure"}
+                departure.locations.map(city => {
+                  return { title: city.name, cityCode: city.code, id: "departure" }
                 })
-              :
-              [{title: ""}]
+                :
+                [{ title: "" }]
             }
             getOptionLabel={(option) => option.title}
             style={{ width: 300 }}
@@ -41,11 +43,11 @@ export class SearchMenu extends Component {
             onChange={(event, value) => onInputSelect(value)}
             options={
               arrival ?
-                arrival.locations.map( city => {
-                  return {title: city.name, cityCode: city.code, id:"arrival"}
+                arrival.locations.map(city => {
+                  return { title: city.name, cityCode: city.code, id: "arrival" }
                 })
-              :
-                [{title: ""}]
+                :
+                [{ title: "" }]
             }
             getOptionLabel={(option) => option.title}
             style={{ width: 300 }}
@@ -54,15 +56,19 @@ export class SearchMenu extends Component {
 
         </div>
 
-        <FormControlLabel
-            control={<Checkbox color="primary" onChange={clickCheckBox}/>}
+        <Calendar onDateSelect={onDateSelect} />
+
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <FormControlLabel
+            control={<Checkbox color="primary" onChange={clickCheckBox} />}
             label="Only direct flights"
             labelPlacement="end"
           />
 
-        <Button variant="contained" color="primary" onClick={clickSearchButton} >
-          Search
-        </Button>
+          <Button variant="contained" color="primary" onClick={clickSearchButton} >
+            Search
+          </Button>
+        </div>
 
       </div>
     )

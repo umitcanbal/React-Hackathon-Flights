@@ -11,7 +11,7 @@ ctrl enter   ->  open the file by diving the screen
 alt ok tuşu  ->  moves the whole line up/down
 ctrl x       ->  cuts the whole line without highlighting
 ctrl enter   ->  inserts a line even if the cursor is not at the end of the current line
-shift tab    ->  reverse tab^
+shift tab    ->  reverse/undo tab
 ctrl k s     ->  opens shortcuts settings
 ctrl shift ç ->  jumps to next bracket
 shift alt a  ->  multi-line comment

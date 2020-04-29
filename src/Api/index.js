@@ -9,8 +9,10 @@ export const fetchCities = async (value) => {
   return cities
 }
 
-export const fetchFlights = async (fly_from, fly_to, isCheckboxOn) => {
-  const url2 = `https://api.skypicker.com/flights?fly_from=${fly_from}&fly_to=${fly_to}&dateFrom=18/11/2020&dateTo=19/11/2020&partner=picky&v=3`
+export const fetchFlights = async (fly_from, fly_to, date, isCheckboxOn) => {
+  const url2 = `https://api.skypicker.com/flights?fly_from=${fly_from}&fly_to=${fly_to}&dateFrom=${date}&partner=picky&v=3`
+  console.log("fetchFlights -> url2", url2)
+  
   const flightsData = await fetch(url2)
     .then(response => response.json())
     .then(data => {
@@ -26,3 +28,8 @@ export const fetchFlights = async (fly_from, fly_to, isCheckboxOn) => {
     .catch(() => alert("error while fetching flights"))
     return flightsData
 }
+
+
+
+// https://api.skypicker.com/flights?fly_from=IST&fly_to=PRG&dateFrom=18/11/2020&partner=picky&v=3
+// https://api.skypicker.com/flights?fly_from=IST&fly_to=PRG&dateFrom=18/11/2019&partner=picky&v=3
