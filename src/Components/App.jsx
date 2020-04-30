@@ -5,7 +5,7 @@ import SearchMenu from "./SearchMenu/SearchMenu.jsx";
 
 import { fetchCities, fetchFlights } from "../Api"
 
-import { MySpinner } from "./Spinner.jsx";
+import { MySpinner } from "./Spinner/Spinner.jsx";
 
 export default class App extends React.Component {
 
@@ -17,7 +17,7 @@ export default class App extends React.Component {
         date: "",
         isCheckboxOn: false,
         isLoading: false,
-        data: "",
+        flightData: "",
     }
 
     onInputChange = async ({ target: { value, id } }) => {
@@ -25,9 +25,9 @@ export default class App extends React.Component {
         this.setState({ [id]: shownCities })
     }
 
-    onInputSelect = ({cityCode, id}) => {
-        if(id==="departure") this.setState({fly_from: cityCode})
-        if(id==="arrival") this.setState({fly_to: cityCode})
+    onInputSelect = ({ cityCode, id }) => {
+        if (id === "departure") this.setState({ fly_from: cityCode })
+        if (id === "arrival") this.setState({ fly_to: cityCode })
     }
 
     onDateSelect = (date) => {
@@ -40,7 +40,7 @@ export default class App extends React.Component {
 
     clickSearchButton = () => {
         const { fly_from, fly_to, date } = this.state;
-        (fly_from && fly_to) ? 
+        (fly_from && fly_to) ?
             date ? this.searchFlights() : alert("Please choose the date of your flight")
             : alert("Please choose valid destination and arrival city");
     }
@@ -48,16 +48,16 @@ export default class App extends React.Component {
     async searchFlights() {
         const { fly_from, fly_to, date, isCheckboxOn } = this.state;
         this.setState({ isLoading: true });
-        const fetchedFlightsData = await fetchFlights(fly_from, fly_to, date, isCheckboxOn)        
-        this.setState({ data: fetchedFlightsData, isLoading: false })
+        const fetchedFlightsData = await fetchFlights(fly_from, fly_to, date, isCheckboxOn)
+        this.setState({ flightData: fetchedFlightsData, isLoading: false })
     }
 
     render() {
-        const { data, isLoading, isCheckboxOn, departure, arrival } = this.state;
+        const { flightData, isLoading, isCheckboxOn, departure, arrival } = this.state;
 
         return (
-            <div style={{ display: "flex", flexDirection:"column", justifyContent: "space-around", alignItems: "center", height: "100vh", }}>
-                <SearchMenu 
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-around", alignItems: "center", height: "100vh", }}>
+                <SearchMenu
                     onInputChange={this.onInputChange}
                     departure={departure}
                     arrival={arrival}
@@ -66,9 +66,9 @@ export default class App extends React.Component {
                     clickCheckBox={this.clickCheckBox}
                     clickSearchButton={this.clickSearchButton}
                 />
-                <div style={{height: "65vh"}}>
+                <div style={{ height: "65vh", display: "flex", flexDirection: "column", alignItems: "center" }}>
                     {isLoading ? <MySpinner /> : undefined}
-                    {data ? <Flights data={data.data} isCheckboxOn={isCheckboxOn} /> : undefined}
+                    {(flightData && !isLoading) ? <Flights data={flightData.data} isCheckboxOn={isCheckboxOn} /> : undefined}
                 </div>
             </div>
         )
