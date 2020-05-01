@@ -11,34 +11,34 @@ export default function MaterialUIPickers(props) {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    date = formattedDate(date)  
+    date = formattedDate(date)
     props.onDateSelect(date);
   };
-  
+
   return (
 
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      
-        <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="dd/MM/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Departure Date"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-        
+
+      <KeyboardDatePicker
+        disableToolbar
+        variant="inline"
+        format="dd/MM/yyyy"
+        margin="normal"
+        id="date-picker-inline"
+        label="Departure Date"
+        value={selectedDate}
+        onChange={handleDateChange}
+        KeyboardButtonProps={{
+          'aria-label': 'change date',
+        }}
+      />
+
     </MuiPickersUtilsProvider>
   );
 }
 
 
 function formattedDate(d = new Date) {
-  return [d.getDate(), d.getMonth()+1, d.getFullYear()]
-      .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
+  return [d.getDate(), d.getMonth() + 1, d.getFullYear()]
+    .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
 }

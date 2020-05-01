@@ -57,11 +57,10 @@ export default class App extends React.Component {
 
     render() {
         const { flightData, isLoading, isCheckboxOn, departure, arrival } = this.state;
-        
+
         return (
-            // <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-around", alignItems: "center", height: "100vh", }}>
             <div className={styles.container}>
-              
+
                 <SearchMenu
                     onInputChange={this.onInputChange}
                     departure={departure}
@@ -71,8 +70,7 @@ export default class App extends React.Component {
                     clickCheckBox={this.clickCheckBox}
                     clickSearchButton={this.clickSearchButton}
                 />
-                
-                {/* <div style={{ height: "65vh", display: "flex", flexDirection: "column", alignItems: "center" }}> */}
+
                 <div className={styles.container2}>
                     {isLoading ? <MySpinner /> : undefined}
                     {(flightData && !isLoading) ? <Flights data={flightData.data} isCheckboxOn={isCheckboxOn} /> : undefined}

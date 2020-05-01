@@ -19,11 +19,9 @@ export class SearchMenu extends Component {
     const { onInputChange, departure, arrival, onInputSelect, onDateSelect, clickCheckBox, clickSearchButton } = this.props
 
     return (
-      // <div style={{ display: "flex", flexDirection:"column", justifyContent: "space-around", alignItems: "center", height: "30vh", }}>
       <div className={styles.container}>
-        {/* <div style={{ display: "flex", justifyContent: "center" }}> */}
-        <div className={styles.container2}>
 
+        <div className={styles.container2}>
 
           <Autocomplete
             id="departure"
@@ -63,9 +61,8 @@ export class SearchMenu extends Component {
 
         <Calendar onDateSelect={onDateSelect} />
 
-        {/* <div style={{ display: "flex", justifyContent: "center" }}> */}
         <div className={styles.container2}>
-        
+
           <FormControlLabel
             control={<Checkbox color="primary" onChange={clickCheckBox} />}
             label="Only direct flights"
@@ -75,6 +72,7 @@ export class SearchMenu extends Component {
           <Button variant="contained" color="primary" onClick={clickSearchButton} >
             Search
           </Button>
+
         </div>
 
       </div>
