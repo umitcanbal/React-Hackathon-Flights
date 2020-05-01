@@ -4,10 +4,10 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 100vh;
 }
 
 .container2 {
+  padding-top: 5vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +16,7 @@
 
 @media (max-width: 770px) {
   .container {
-    margin-top: 48px !important
+    margin-top: 48px 
   }
 
   .container2 {
@@ -24,15 +24,13 @@
   }
 }
 
-/* 
 @media (max-width: 380px) {
   .container {
-    width: 100vh;
-    height: 100vh;
+    width: 100vw;
+    margin-top: 24px;
   }
 
   .container2 {
-    height: 100vh;
-    width: 100vh;
+    height: 55vh;
   }
-} */
+}

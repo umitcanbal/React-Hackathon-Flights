@@ -5,10 +5,9 @@ import SearchMenu from "./SearchMenu/SearchMenu.jsx";
 import MySpinner from "./Spinner/Spinner.jsx";
 
 import { fetchCities, fetchFlights } from "../Api"
+
 import styles from "./App.module.css"
-
 import cx from "classnames"
-
 
 export default class App extends React.Component {
 
@@ -80,3 +79,5 @@ export default class App extends React.Component {
         )
     }
 }
+
+// *** I had to change the html file's line as follows: <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1"> to be able to use chromes device toolbar to be able to see the mobile version without bugs

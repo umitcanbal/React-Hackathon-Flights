@@ -6,7 +6,7 @@
 }
 
 .container2 {
-  margin-top: 8px;
+  padding-top: 2vh;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -15,7 +15,13 @@
 
 @media (max-width: 770px) {
   .container2 {
-    margin-top: 32px;
     justify-content: space-around;
+  }
+}
+
+@media (max-width: 380px) {
+  .container2 {
+    width: 100vw;
+    margin-bottom: 24px;
   }
 }

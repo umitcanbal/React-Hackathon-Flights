@@ -11,16 +11,15 @@
   justify-content: center;
 }
 
-/* @media (max-width: 380px) {
+@media (max-width: 380px) {
   .container {
-    margin-top: 48px;
-    height: 60vh;
-    
+    margin-top: 8px;
+    height: 40vh;
   }
-} */
+} 
 
-/* @media (max-width: 380px) {
+@media (max-width: 380px) {
   .container2 {
     flex-direction: column;
   }
-} */
+}
