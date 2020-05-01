@@ -1,6 +1,8 @@
 import React from 'react'
 import { DateTime } from 'luxon';
 
+import styles from "./FlightsTableRow.module.css"
+
 function FlightsTableRow({singleFlight}) {
 
   const {cityFrom, cityTo, dTime, aTime, fly_duration, route, price} = singleFlight;

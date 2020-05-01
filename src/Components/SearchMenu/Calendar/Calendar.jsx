@@ -3,6 +3,8 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers/';
 
+import styles from "./Calendar.module.css"
+
 export default function MaterialUIPickers(props) {
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());

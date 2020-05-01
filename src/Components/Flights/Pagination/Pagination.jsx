@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 
+import styles from "./Pagination.module.css"
+
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {

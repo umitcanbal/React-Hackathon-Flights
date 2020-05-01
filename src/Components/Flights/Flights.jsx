@@ -2,6 +2,11 @@ import React from "react";
 
 import FlightsTableRow from "./FlightsTableRow/FlightsTableRow.jsx"
 import Pagination from "./Pagination/Pagination.jsx"
+
+import styles from "./Flights.module.css"
+import globalStyles from "../../Assets/global-styles/bootstrap.min.module.css"
+import cx from "classnames"
+
 export default class Flights extends React.Component {
   constructor() {
     super();
@@ -33,6 +38,8 @@ export default class Flights extends React.Component {
   }
 
   render() {
+    console.log(globalStyles)
+    console.log(globalStyles["table"], globalStyles["table-striped"], globalStyles["table-bordered"], globalStyles["table-hover"])
     const {data} = this.props;
     const {currentPage, numberOfPages, isCheckboxOn} = this.state;
     
@@ -41,11 +48,16 @@ export default class Flights extends React.Component {
       // for example if "currentPage" = 1; the conditions met when "index" is between 0 and 4, so the first 5 flights are returned ! 
       if(((currentPage-1)*5)<=index && index<=(currentPage*5-1)) return singleFlight;
     } )
-    return(
-      <div className="container" style={{display: "flex", flexDirection: "column", justfiyContent: "flex-start", alignItems: "center"}}>
+    return (
+      <div className={cx(globalStyles["container"], styles.container)}>
+      
         <h2>Flight Information</h2>
-        <div style={{display: "flex", flexDirection: "column", justfiyContent: "center", alignItems: "center"}}>
-          <table className="table table-striped table-bordered table-hover table-condensed">
+        
+        {/* <div style={{display: "flex", flexDirection: "column", justfiyContent: "center", alignItems: "center"}}> */}
+        <div className={styles.container2}>
+        
+          <table className={cx(globalStyles["table"], globalStyles["table-striped"], globalStyles["table-bordered"], globalStyles["table-hover"], globalStyles["table-condensed"])}>
+          
             <thead>
               <tr>
                 <th>Departure City</th>

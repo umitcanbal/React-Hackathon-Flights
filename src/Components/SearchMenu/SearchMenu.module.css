@@ -1,0 +1,16 @@
+/* <div style={{ display: "flex", flexDirection:"column", justifyContent: "space-around", alignItems: "center", height: "30vh", }}>
+        <div style={{ display: "flex", justifyContent: "center" }}> */
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 30vh;
+}
+
+.container2 {
+  display: flex;
+  justify-content: center;
+}
