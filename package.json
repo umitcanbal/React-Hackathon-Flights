@@ -3,10 +3,12 @@
   "version": "0.0.1",
   "description": "Practice of Gulp & SCSS",
   "main": "index.js",
+  "homepage": "https://umitcanbal.github.io/React-Hackathon-Flightsnpm",
   "scripts": {
     "build": "webpack -d",
     "build:prod": "webpack -p",
-    "watch": "webpack -wd"
+    "watch": "webpack -wd",
+    "deploy": "gh-pages -d dist"
   },
   "author": "The amazing me",
   "license": "ISC",
@@ -43,6 +45,7 @@
     "bootstrap": "^4.4.1",
     "classnames": "^2.2.6",
     "date-fns": "^2.0.0-beta.5",
+    "gh-pages": "^2.2.0",
     "luxon": "^1.23.0",
     "moment": "^2.24.0",
     "react": "^16.13.1",
