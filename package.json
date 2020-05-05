@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Practice of Gulp & SCSS",
   "main": "index.js",
-  "homepage": "https://umitcanbal.github.io/React-Hackathon-Flightsnpm",
+  "homepage": "https://umitcanbal.github.io/React-Hackathon-Flights",
   "scripts": {
     "build": "webpack -d",
     "build:prod": "webpack -p",
