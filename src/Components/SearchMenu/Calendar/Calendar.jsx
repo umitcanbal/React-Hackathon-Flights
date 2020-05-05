@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers/';
@@ -9,9 +9,17 @@ export default function MaterialUIPickers(props) {
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
+  useEffect(() => {
+    handleDateChange(selectedDate);
+  }, []);
+  // If the date not chosen, today's date is set
+  
   const handleDateChange = (date) => {
     setSelectedDate(date);
+    // Only visually changes the date displayed in calendar
+
     date = formattedDate(date)
+    console.log("handleDateChange -> date", date)
     props.onDateSelect(date);
   };
 
