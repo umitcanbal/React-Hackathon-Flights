@@ -11,14 +11,14 @@
   justify-content: center;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 680px) {
   .container {
     margin-top: 8px;
     height: 40vh;
   }
 } 
 
-@media (max-width: 380px) {
+@media (max-width: 680px) {
   .container2 {
     flex-direction: column;
   }
