@@ -12,14 +12,13 @@ export default function MaterialUIPickers(props) {
   useEffect(() => {
     handleDateChange(selectedDate);
   }, []);
-  // If the date not chosen, today's date is set
+  // Today's date is set as default
   
   const handleDateChange = (date) => {
     setSelectedDate(date);
     // Only visually changes the date displayed in calendar
-
+    
     date = formattedDate(date)
-    console.log("handleDateChange -> date", date)
     props.onDateSelect(date);
   };
 

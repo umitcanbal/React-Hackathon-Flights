@@ -38,8 +38,6 @@ export default class Flights extends React.Component {
   }
 
   render() {
-    console.log(globalStyles)
-    console.log(globalStyles["table"], globalStyles["table-striped"], globalStyles["table-bordered"], globalStyles["table-hover"])
     const { data } = this.props;
     const { currentPage, numberOfPages, isCheckboxOn } = this.state;
 

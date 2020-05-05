@@ -33,6 +33,7 @@ export default class App extends React.Component {
     }
 
     onDateSelect = (date) => {
+        if(date==="NaN/NaN/NaN") date = "";
         this.setState({ date: date })
     }
 
@@ -43,7 +44,7 @@ export default class App extends React.Component {
     clickSearchButton = () => {
         const { fly_from, fly_to, date } = this.state;
         (fly_from && fly_to) ?
-            date ? this.searchFlights() : alert("Please choose the date of your flight")
+            date ? this.searchFlights() : alert("Please choose a valid date for your flight")
             : alert("Please choose valid destination and arrival city");
     }
 
